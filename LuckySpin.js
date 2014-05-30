@@ -57,6 +57,8 @@ org.ciroque.luckyspin.LuckySpinner = function() {
             this.reset();
 
         } else {
+
+            // Fisher-Yates shuffle: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
             for(var index = length; index > 0; index--) {
                 var randomIndex = Math.floor(Math.random() * (index + 1));
                 var current = this.active[index];
