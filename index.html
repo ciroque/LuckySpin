@@ -30,8 +30,33 @@
             });
         }
 
+        function animate() {
+            var count = $('.active').children().length;
+            var rolls = count * 3;
+
+            function selector(roll, prevIndex) {
+                var randomIndex = Math.floor(Math.random() * count);
+                var $active = $('.active');
+
+                $($active.children()[randomIndex]).addClass('highlighted');
+
+                if(prevIndex >= 0) {
+                    $($active.children()[prevIndex]).removeClass('highlighted');
+                }
+
+                if(roll > 0) {
+                    window.setTimeout(function() { selector(roll - 1, randomIndex) }, 50);
+                } else {
+                    spin();
+                }
+            }
+
+            selector(rolls, -1);
+        }
+
     </script>
     <style type="text/css">
+
         body {
             color: white;
             font-family: Verdana, Arial, Tahoma, sans-serif;
@@ -58,6 +83,13 @@
             border-radius: 3px;
             margin: 1px;
             padding: 6px;
+        }
+
+        .highlighted {
+            background-color: white;
+            border-color: #a2b347;
+            color: chartreuse;
+            font-weight: bolder;
         }
 
         .current {
@@ -114,7 +146,8 @@
     </div>
     <div class="centercolumn">
         <div class="name current"></div>
-        <button id="spin" onclick="spin()">Spin</button>
+        <!--<button id="spin" onclick="spin()">Spin</button>-->
+        <button id="spin" onclick="animate()">Spin!</button>
     </div>
     <div class="rightcolumn tilecontainer">
         <div class="label">Done this round</div>

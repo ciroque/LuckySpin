@@ -78,3 +78,4 @@ org.ciroque.luckyspin.LuckySpinner = function() {
 };
 
 var luckySpinner = new org.ciroque.luckyspin.LuckySpinner(['Adrianne', 'Andrew', 'Blake', 'Brian', 'Mike', 'Nick', 'Ronnie', 'Ryan', 'Steve', 'Terry']);
+//var luckySpinner = new org.ciroque.luckyspin.LuckySpinner(['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']);
