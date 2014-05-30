@@ -32,7 +32,7 @@ org.ciroque.luckyspin.LuckySpinner = function() {
     this.moveToInactive = function(index) {
         var selected = this.active[index];
         this.inactive.unshift(selected);
-        this.history.unshift(selected);
+        this.history.unshift(JSON.stringify({ 'name': selected, 'date': new Date() }));
         this.active.splice(index, 1);
     };
 
