@@ -10,6 +10,8 @@ org.ciroque.luckyspin.LuckySpinner = function() {
     this.LOCAL_STORAGE_PREFIX_KEY = "LuckySpin::";
     this.LOCAL_STORAGE_ACTIVE_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'ACTIVE';
     this.LOCAL_STORAGE_INACTIVE_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'INACTIVE';
+    this.LOCAL_STORAGE_HISTORY_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'HISTORY';
+    this.LOCAL_STORAGE_CURRENT_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'CURRENT';
 
     function loadFromLocalStorage(key, alt) {
         var loaded = localStorage.getItem(key);
@@ -22,19 +24,23 @@ org.ciroque.luckyspin.LuckySpinner = function() {
         return loaded;
     }
 
+    this.current = localStorage.getItem(this.LOCAL_STORAGE_CURRENT_KEY);
     this.active = loadFromLocalStorage(this.LOCAL_STORAGE_ACTIVE_KEY, arguments[0] || []);
     this.inactive = loadFromLocalStorage(this.LOCAL_STORAGE_INACTIVE_KEY, []);
-
-    console.log('DEBUG>> { ' + this.active + ' } { ' + this.inactive + ' }');
+    this.history = loadFromLocalStorage(this.LOCAL_STORAGE_HISTORY_KEY, []);
 
     this.moveToInactive = function(index) {
-        this.inactive.push(this.active[index]);
+        var selected = this.active[index];
+        this.inactive.unshift(selected);
+        this.history.unshift(selected);
         this.active.splice(index, 1);
     };
 
     this.persistToLocalStorage = function() {
         localStorage.setItem(this.LOCAL_STORAGE_ACTIVE_KEY, this.active);
         localStorage.setItem(this.LOCAL_STORAGE_INACTIVE_KEY, this.inactive);
+        localStorage.setItem(this.LOCAL_STORAGE_HISTORY_KEY, this.history);
+        localStorage.setItem(this.LOCAL_STORAGE_CURRENT_KEY, this.current);
     };
 
     this.reset = function() {
@@ -43,13 +49,10 @@ org.ciroque.luckyspin.LuckySpinner = function() {
     };
 
     this.spin = function() {
-        var callback = arguments[0] || function(list) {};
         var length = (this.active.length - 1);
-        var chosen = null;
 
         if(length == 0) {
-            callback(this.active);
-            chosen = this.active[0];
+            this.current = this.active[0];
             this.moveToInactive(0);
             this.reset();
 
@@ -59,21 +62,17 @@ org.ciroque.luckyspin.LuckySpinner = function() {
                 var current = this.active[index];
                 this.active[index] = this.active[randomIndex];
                 this.active[randomIndex] = current;
-                callback(this.active);
             }
 
             var selectedIndex = Math.floor((Math.random() * length) + 1);
-            chosen = this.active[selectedIndex];
+            this.current = this.active[selectedIndex];
             this.moveToInactive(selectedIndex);
         }
 
         this.persistToLocalStorage();
 
-        return chosen;
+        return this.current;
     };
 };
 
-var ls = new org.ciroque.luckyspin.LuckySpinner(['Adrianne', 'Andrew', 'Blake', 'Brian', 'Mike', 'Nick', 'Ronnie', 'Ryan', 'Steve', 'Terry']);
-
-
-
+var luckySpinner = new org.ciroque.luckyspin.LuckySpinner(['Adrianne', 'Andrew', 'Blake', 'Brian', 'Mike', 'Nick', 'Ronnie', 'Ryan', 'Steve', 'Terry']);

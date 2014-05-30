@@ -7,39 +7,119 @@
     <script type="application/javascript" src="jquery-2.1.1.min.js"></script>
     <script type="application/javascript">
 
-        var count = ls.active.length * 4;
-
-//        function updateNames(list) {
-//            $.each(list, function(idx, val) {
-//                $el.append($('<option></option>')
-//                        .attr('value', val)
-//                        .text(val));
-//            });
-//
-//            console.log($el.attr("options"));
-//        }
-//
         function spin() {
-            $('#chosen').text(ls.spin());
-            setActiveNames();
+            luckySpinner.spin();
+            updateNames();
         }
 
-        function setActiveNames() {
-            var $el = $("#names");
+        function updateNames() {
+            generateNameElements('.active', luckySpinner.active);
+            generateNameElements('.inactive', luckySpinner.inactive);
+
+            $('.current').text(luckySpinner.current);
+        }
+
+        function generateNameElements(elId, names) {
+            var $el = $(elId);
             $el.empty();
-            $.each(ls.active, function(idx, val) {
-                console.log('>>>> ' + val);
-                $el.append($('<option></option>')
+            $.each(names, function (idx, val) {
+                $el.append($('<div></div>')
+                        .attr('class', 'name')
                         .attr('value', val)
                         .text(val));
             });
         }
 
     </script>
+    <style type="text/css">
+        body {
+            color: white;
+            font-family: Verdana, Arial, Tahoma, sans-serif;
+        }
+
+        button {
+            color: #888d6d;
+            font-size: larger;
+            font-weight: bolder;
+            height: 120px;
+            width: 100%;
+
+        }
+
+        .centercolumn {
+            display: inline-block;
+            vertical-align: top;
+            width: 20%;
+        }
+
+        .name {
+            background-color: #888d6d;
+            border: solid 2px #6d888d;
+            border-radius: 3px;
+            margin: 1px;
+            padding: 6px;
+        }
+
+        .current {
+            background-color: ghostwhite;
+            color: #a2b347;
+            font-size: x-large;
+            text-align: center;
+        }
+
+        .label {
+            border: solid 2px #8d726d;
+            border-radius: 4px;
+            color: #726d8d;
+            font-size: larger;
+            font-weight: bolder;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .leftcolumn {
+            display: inline-block;
+            vertical-align: top;
+            width: 38%;
+        }
+
+        .names {
+            height: 100%;
+            padding: 4px;
+        }
+
+        .rightcolumn {
+            display: inline-block;
+            vertical-align: top;
+            width: 38%;
+        }
+
+        .tilecontainer {
+        }
+
+        .viewport {
+            width: 95%;
+            border: solid 1px #6d888d;
+            border-radius: 8px;
+            height: 80%;
+            padding: 6px;
+        }
+    </style>
 </head>
-<body onload="setActiveNames()">
-<button id="spin" onclick="spin()">Spin</button>
-<div style="width:120px;" id="chosen"></div>
-<select style="width:120px; height:480px;" multiple="multiple" id="names"></select>
+<body onload="updateNames()">
+<div class="viewport">
+    <div class="leftcolumn tilecontainer">
+        <div class="label">Available</div>
+        <span class="names active"></span>
+    </div>
+    <div class="centercolumn">
+        <div class="name current"></div>
+        <button id="spin" onclick="spin()">Spin</button>
+    </div>
+    <div class="rightcolumn tilecontainer">
+        <div class="label">Done this round</div>
+        <span class="names inactive"></span>
+    </div>
+</div>
 </body>
 </html>
