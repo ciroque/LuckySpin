@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="application/javascript" src="LuckySpin.js"></script>
+    <script type="application/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="application/javascript">
+
+        var count = ls.active.length * 4;
+
+//        function updateNames(list) {
+//            $.each(list, function(idx, val) {
+//                $el.append($('<option></option>')
+//                        .attr('value', val)
+//                        .text(val));
+//            });
+//
+//            console.log($el.attr("options"));
+//        }
+//
+        function spin() {
+            $('#chosen').text(ls.spin());
+            setActiveNames();
+        }
+
+        function setActiveNames() {
+            var $el = $("#names");
+            $el.empty();
+            $.each(ls.active, function(idx, val) {
+                console.log('>>>> ' + val);
+                $el.append($('<option></option>')
+                        .attr('value', val)
+                        .text(val));
+            });
+        }
+
+    </script>
+</head>
+<body onload="setActiveNames()">
+<button id="spin" onclick="spin()">Spin</button>
+<div style="width:120px;" id="chosen"></div>
+<select style="width:120px; height:480px;" multiple="multiple" id="names"></select>
+</body>
+</html>
