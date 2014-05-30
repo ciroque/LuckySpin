@@ -45,7 +45,7 @@
                 }
 
                 if(roll > 0) {
-                    window.setTimeout(function() { selector(roll - 1, randomIndex) }, 50);
+                    window.setTimeout(function() { selector(roll - 1, randomIndex) }, 50 * (1 / count));
                 } else {
                     spin();
                 }
@@ -86,8 +86,8 @@
         }
 
         .highlighted {
-            background-color: white;
-            border-color: #a2b347;
+            background-color: #a2b347;
+            border-color: black;
             color: chartreuse;
             font-weight: bolder;
         }
