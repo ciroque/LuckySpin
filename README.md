@@ -7,6 +7,4 @@ A simple web page that randomly selects from a list of options. There is a graph
 
 The page uses HTML 5 Local Storage to persist the lists so that already selected elements are remembered between page loads.
 
-An example can be found [here]([webiste]).
-
-[website]: http://luckyspin.atomicsteampunk.com:8082/LuckySpin
+An example can be found [here](http://luckyspin.atomicsteampunk.com:8082/LuckySpin).
