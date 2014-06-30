@@ -3,24 +3,28 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Lucky Spin!</title>
+    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link type="text/css" rel="stylesheet" href="main.css">
+    <script type="application/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="application/javascript" src="bootstrap/js/bootstrap.js"></script>
     <script type="application/javascript" src="LuckySpin.js"></script>
     <script type="application/javascript" src="LuckySpinner.js"></script>
-    <script type="application/javascript" src="jquery-2.1.1.min.js"></script>
 </head>
 <body>
-<div class="viewport">
-    <div class="leftcolumn tilecontainer">
-        <div class="label">Available</div>
-        <span class="names active"></span>
-    </div>
-    <div class="centercolumn">
-        <div class="name current"></div>
-        <button id="spin" onclick="app.animate()">Spin!</button>
-    </div>
-    <div class="rightcolumn tilecontainer">
-        <div class="label">Done this round</div>
-        <span class="names inactive"></span>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 panel panel-default">
+            <div class="panel-heading">Available</div>
+            <span class="active"></span>
+        </div>
+        <div class="col-md-2">
+            <div id="current" class="name current"></div>
+            <button id="spin" onclick="app.animate()">Spin!</button>
+        </div>
+        <div class="col-md-5 panel panel-default">
+            <div class="panel-heading">Done this round</div>
+            <span class="inactive"></span>
+        </div>
     </div>
 </div>
 <script type="application/javascript">

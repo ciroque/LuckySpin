@@ -27,7 +27,7 @@ org.ciroque.luckyspin.LuckySpin.prototype.updateNames = function() {
     generateNameElements('.active', this.spinner.active);
     generateNameElements('.inactive', this.spinner.inactive);
 
-    $('.current').text(this.spinner.current);
+    $('#current').text(this.spinner.current);
 };
 
 org.ciroque.luckyspin.LuckySpin.prototype.animate = function() {
