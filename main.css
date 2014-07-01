@@ -7,9 +7,15 @@ button {
     color: #888d6d;
     font-size: larger;
     font-weight: bolder;
-    height: 120px;
     width: 100%;
+}
 
+.btn-lg {
+    height: 120px;
+}
+
+.btn-sm {
+    height: 60px;
 }
 
 .current {
@@ -31,4 +37,8 @@ button {
     border-radius: 3px;
     margin: 1px;
     padding: 6px;
+}
+
+.padded-bottom {
+    padding-bottom: 14px;
 }
