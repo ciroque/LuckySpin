@@ -6,6 +6,11 @@ org.ciroque.luckyspin.LuckySpin = function(spinner) {
     this.spinner = spinner;
 };
 
+org.ciroque.luckyspin.LuckySpin.prototype.reset = function() {
+    this.spinner.reset();
+    this.updateNames();
+};
+
 org.ciroque.luckyspin.LuckySpin.prototype.spin = function() {
     this.spinner.spin();
     this.updateNames();

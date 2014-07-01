@@ -2,7 +2,7 @@ var org = org || {};
 org.ciroque = org.ciroque || {};
 org.ciroque.luckyspin = org.ciroque.luckyspin || {};
 
-org.ciroque.luckyspin.LuckySpinner = function() {
+org.ciroque.luckyspin.LuckySpinner = function(data) {
     this.LOCAL_STORAGE_PREFIX_KEY = "LuckySpin::";
     this.LOCAL_STORAGE_ACTIVE_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'ACTIVE';
     this.LOCAL_STORAGE_INACTIVE_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'INACTIVE';
@@ -20,10 +20,12 @@ org.ciroque.luckyspin.LuckySpinner = function() {
         return loaded;
     }
 
+    this.data = data || [];
     this.current = localStorage.getItem(this.LOCAL_STORAGE_CURRENT_KEY);
-    this.active = loadFromLocalStorage(this.LOCAL_STORAGE_ACTIVE_KEY, arguments[0] || []);
+    this.active = loadFromLocalStorage(this.LOCAL_STORAGE_ACTIVE_KEY, data);
     this.inactive = loadFromLocalStorage(this.LOCAL_STORAGE_INACTIVE_KEY, []);
     this.history = loadFromLocalStorage(this.LOCAL_STORAGE_HISTORY_KEY, []);
+    return this;
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.moveToInactive = function(index) {
@@ -31,6 +33,7 @@ org.ciroque.luckyspin.LuckySpinner.prototype.moveToInactive = function(index) {
     this.inactive.unshift(selected);
     this.history.unshift(JSON.stringify({ 'name': selected, 'date': new Date() }));
     this.active.splice(index, 1);
+    return this;
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.persistToLocalStorage = function() {
@@ -41,8 +44,10 @@ org.ciroque.luckyspin.LuckySpinner.prototype.persistToLocalStorage = function() 
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.reset = function() {
-    this.active = this.inactive;
+    this.active = this.data;
     this.inactive = [];
+    this.persistToLocalStorage();
+    return this;
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.spin = function() {
@@ -56,6 +61,7 @@ org.ciroque.luckyspin.LuckySpinner.prototype.spin = function() {
     } else {
 
         // Fisher-Yates shuffle: http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        // see also: http://www.i-programmer.info/programming/theory/2744-how-not-to-shuffle-the-kunth-fisher-yates-algorithm.html
         for(var index = length; index > 0; index--) {
             var randomIndex = Math.floor(Math.random() * (index + 1));
             var current = this.active[index];
@@ -70,7 +76,5 @@ org.ciroque.luckyspin.LuckySpinner.prototype.spin = function() {
 
     this.persistToLocalStorage();
 
-    return this.current;
+    return this;
 };
-
-var luckySpinner = new org.ciroque.luckyspin.LuckySpinner(['A of Clubs', '2 of Clubs', '3 of Clubs', '4 of Clubs', '5 of Clubs', '6 of Clubs', '7 of Clubs', '8 of Clubs', '9 of Clubs', '10 of Clubs', 'J of Clubs', 'Q of Clubs', 'K of Clubs', 'A of Spades', '2 of Spades', '3 of Spades', '4 of Spades', '5 of Spades', '6 of Spades', '7 of Spades', '8 of Spades', '9 of Spades', '10 of Spades', 'J of Spades', 'Q of Spades', 'K of Spades', 'A of Hearts', '2 of Hearts', '3 of Hearts', '4 of Hearts', '5 of Hearts', '6 of Hearts', '7 of Hearts', '8 of Hearts', '9 of Hearts', '10 of Hearts', 'J of Hearts', 'Q of Hearts', 'K of Hearts', 'A of Diamonds', '2 of Diamonds', '3 of Diamonds', '4 of Diamonds', '5 of Diamonds', '6 of Diamonds', '7 of Diamonds', '8 of Diamonds', '9 of Diamonds', '10 of Diamonds', 'J of Diamonds', 'Q of Diamonds', 'K of Diamonds']);
