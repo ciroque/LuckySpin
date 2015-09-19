@@ -6,8 +6,8 @@ org.ciroque.luckyspin.LuckySpin = function(spinner) {
     this.spinner = spinner;
 };
 
-org.ciroque.luckyspin.LuckySpin.prototype.reset = function() {
-    this.spinner.reset();
+org.ciroque.luckyspin.LuckySpin.prototype.reset = function(altKey) {
+    this.spinner.reset(altKey);
     this.updateNames();
 };
 
@@ -32,7 +32,7 @@ org.ciroque.luckyspin.LuckySpin.prototype.updateNames = function() {
     generateNameElements('.active', this.spinner.active);
     generateNameElements('.inactive', this.spinner.inactive);
 
-    $('#current').text(this.spinner.current);
+    $('#current').html( this.spinner.current == null ? '&nbsp;' : this.spinner.current );
 };
 
 org.ciroque.luckyspin.LuckySpin.prototype.animate = function() {
