@@ -4,28 +4,37 @@ org.ciroque.luckyspin = org.ciroque.luckyspin || {};
 
 org.ciroque.luckyspin.LuckySpinner = function(data) {
     this.LOCAL_STORAGE_PREFIX_KEY = "LuckySpin::";
+    this.LOCAL_STORAGE_DATA_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'DATA';
     this.LOCAL_STORAGE_ACTIVE_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'ACTIVE';
     this.LOCAL_STORAGE_INACTIVE_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'INACTIVE';
     this.LOCAL_STORAGE_HISTORY_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'HISTORY';
     this.LOCAL_STORAGE_CURRENT_KEY = this.LOCAL_STORAGE_PREFIX_KEY + 'CURRENT';
 
-    function loadFromLocalStorage(key, alt) {
-        var loaded = localStorage.getItem(key);
-        if(loaded === null || loaded === undefined) {
-            loaded = alt;
-        } else {
-            loaded = loaded.split(',');
-        }
-
-        return loaded;
-    }
-
     this.data = data || [];
     this.current = localStorage.getItem(this.LOCAL_STORAGE_CURRENT_KEY);
-    this.active = loadFromLocalStorage(this.LOCAL_STORAGE_ACTIVE_KEY, data);
-    this.inactive = loadFromLocalStorage(this.LOCAL_STORAGE_INACTIVE_KEY, []);
-    this.history = loadFromLocalStorage(this.LOCAL_STORAGE_HISTORY_KEY, []);
+    this.active = this.loadFromLocalStorage(this.LOCAL_STORAGE_ACTIVE_KEY, this.makeDataCopy(data));
+    this.inactive = this.loadFromLocalStorage(this.LOCAL_STORAGE_INACTIVE_KEY, []);
+    this.history = this.loadFromLocalStorage(this.LOCAL_STORAGE_HISTORY_KEY, []);
     return this;
+};
+
+org.ciroque.luckyspin.LuckySpinner.prototype.loadFromLocalStorage = function(key, alt) {
+    var loaded = localStorage.getItem(key);
+    if(loaded === null || loaded === undefined) {
+        loaded = alt;
+    } else {
+        loaded = loaded.split(',');
+    }
+
+    return loaded;
+};
+
+org.ciroque.luckyspin.LuckySpinner.prototype.makeDataCopy = function(d) {
+    var copied = [];
+    for(var i = 0; i < d.length; i++) {
+        copied.push(d[i]);
+    }
+    return copied;
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.moveToInactive = function(index) {
@@ -37,6 +46,7 @@ org.ciroque.luckyspin.LuckySpinner.prototype.moveToInactive = function(index) {
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.persistToLocalStorage = function() {
+    localStorage.setItem(this.LOCAL_STORAGE_DATA_KEY, this.data);
     localStorage.setItem(this.LOCAL_STORAGE_ACTIVE_KEY, this.active);
     localStorage.setItem(this.LOCAL_STORAGE_INACTIVE_KEY, this.inactive);
     localStorage.setItem(this.LOCAL_STORAGE_HISTORY_KEY, this.history);
@@ -44,7 +54,8 @@ org.ciroque.luckyspin.LuckySpinner.prototype.persistToLocalStorage = function() 
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.reset = function() {
-    this.active = this.data;
+    this.data = this.loadFromLocalStorage(this.LOCAL_STORAGE_DATA_KEY, ['WTF']);
+    this.active = this.makeDataCopy(this.data);
     this.inactive = [];
     this.persistToLocalStorage();
     return this;
