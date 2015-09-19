@@ -54,6 +54,27 @@ org.ciroque.luckyspin.LuckySpinner.prototype.persistToLocalStorage = function ()
 };
 
 org.ciroque.luckyspin.LuckySpinner.prototype.reset = function (clearLocalStorage) {
+    var self = this;
+
+    function rotateLastSelected() {
+        var current = self.current;
+        console.log('rotateLastSelected: current = ' + current);
+
+        var index = -1;
+        for(var i = 0; i < self.data.length; i++) {
+            console.log('> rotateLastSelected: iterating data: ' + self.data[i]);
+            if(self.data[i] === current) {
+                index = i;
+                break;
+            }
+        }
+
+        console.log('> rotateLastSelected: index = ' + index);
+        if(index > -1) {
+            self.moveToInactive(index)
+        }
+    }
+
     if (clearLocalStorage) {
         var data = this.loadFromLocalStorage(this.LOCAL_STORAGE_DATA_KEY);
         localStorage.clear();
@@ -64,6 +85,9 @@ org.ciroque.luckyspin.LuckySpinner.prototype.reset = function (clearLocalStorage
     this.data = this.loadFromLocalStorage(this.LOCAL_STORAGE_DATA_KEY, this.data);
     this.active = this.makeDataCopy(this.data);
     this.inactive = [];
+
+    rotateLastSelected();
+
     this.persistToLocalStorage();
     return this;
 };
@@ -73,7 +97,7 @@ org.ciroque.luckyspin.LuckySpinner.prototype.spin = function () {
 
     if (length == 0) {
         this.current = this.active[0];
-        this.moveToInactive(0);
+        //this.moveToInactive(0);
         this.reset();
 
     } else {
